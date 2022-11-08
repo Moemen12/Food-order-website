@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc</title>
+</head>
+<body>
+    <b style="font-size:55px;">This Order will be ready in </b>
+    <script> 
+        var aaa;
+       let speed= 40 ; // speed (km/h)     
+       let normalOrderTime = 0; // Orders need 30 min to be Ready  
+      
+      // Get user Location
+      
+       function getLocation() {
+                                  if (navigator.geolocation) {
+                                  navigator.geolocation.getCurrentPosition(showPosition);
+                                      } 
+       }
+      
+                    
+      function showPosition(position) {
+                                  var lat2= position.coords.latitude ;
+                                  var lon2= position.coords.longitude;  
+     
+                                  function distance(restaurant_lat1,lat2, restaurant_lon1, lon2)  {
+                              
+                                     // The math module contains a function
+                                     // named toRadians which converts from
+                                     // degrees to radians.
+                                     restaurant_lon1 =  restaurant_lon1 * Math.PI / 180;
+                                     lon2 = lon2 * Math.PI / 180;
+                                     restaurant_lat1 = restaurant_lat1 * Math.PI / 180;
+                                     lat2 = lat2 * Math.PI / 180;
+                             
+                                     // Haversine formula
+                                     let dlon = lon2 - restaurant_lon1;
+                                     let dlat = lat2 - restaurant_lat1;
+                                     let a = Math.pow(Math.sin(dlat / 2), 2)
+                                             + Math.cos(restaurant_lat1) * Math.cos(lat2)
+                                             * Math.pow(Math.sin(dlon / 2),2);
+                                         
+                                     let c = 2 * Math.asin(Math.sqrt(a));
+                             
+                                     // Radius of earth in kilometers. Use 3956
+                                     // for miles
+                                     let r = 6371;
+                             
+                                     // calculate the result
+                                     return(c * r);
+                                 }
+                             
+                             // Driver code   
+                                     
+                                     let restaurant_lat1 = 38.6730095;
+                                     let restaurant_lon1 = 29.3303868;
+                               var finalDistance = distance(restaurant_lat1, lat2,restaurant_lon1, lon2);
+                                 finalDistance=  (Math.round(finalDistance * 100) / 100).toFixed(2);
+     
+                                 var time = (finalDistance/speed)*60 + normalOrderTime; // time (min)   
+                    
+                                 demobb =document.createElement("b");
+                                 createdText = document.createTextNode(time+" minutes ");
+                                 demobb.appendChild(createdText);
+                                 demobb.style.cssText = "color:red;font-size:60px;";
+                                 document.body.appendChild(demobb);
+                                 var img = document.createElement("img");
+                                  img.src = "images/order.png";
+                                  demobb.appendChild(img);
+                    
+                                                                                                             
+       }
+     
+       getLocation();
+     
+        window.onload= function(){
+            setTimeout(function(){window.location.replace("http://localhost/food-order/"); },5000);
+      }
+
+          
+
+        </script>
+            
+</body>
+</html>
